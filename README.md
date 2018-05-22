@@ -41,16 +41,17 @@ API published online (Cloud)
 Requirements
 	Usuarios
 		- Registrar
-				- Id 
-				- Nombre
-				- Email
-				- FechaCreación
-				- Estado
+				- Id :int 
+				- Nombre : string
+				- Email : string
+				- FechaCreación :Timestamp
+				- Estado : string
 				- Rol : string
 			
 			- Usuarios comunes
 				- Comprador
-				- Vendedor
+		
+		- Vendedor
 			- Admin
 		- Login
 		- Buscar
@@ -89,3 +90,24 @@ Requirements
 			- Usuarios
 			- Items
 			- Categorias
+
+Forma de trabajo:
+
+- Cada feature tiene un branch
+- Hacemos pull request a master
+	- Code Review
+
+Branch naming
+
+
+Estándares:
+
+- Todo en inglés
+- Nombre columnas pascalCase
+- Nombre tablas todo en singular
+- Palabras clave MAYÚSCULAS (SELECT, UPDATE, INSERT, WHERE)
+- Nombre clases CamelCase
+
+Estandares rest
+- Recurso en plural
+
