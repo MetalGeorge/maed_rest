@@ -8,3 +8,84 @@ Integrantes:
 - Carlos Montellano Barriga
 - Raúl Vargas Choquilla
 - Jorge Escobar Pacheco
+
+Stack:
+	- MySQL - Items - Categorias
+	- MongoDb - Usuarios
+	- Api Gateway
+	- Microservicios
+		- NodeJS
+		- Java Spring Boot
+	- TICKS
+	- JMeter
+	- Document Swagger
+	
+API Documentation
+	- Swagger
+
+- API Testing A working script (or a Web App, alternatively) to illustrate all of the API flows (e.g. jasmine.js).
+	- Postman
+	- Si terminamos todo hasta el jueves vemos de crear la aplicación
+		
+Scalability Strategy
+	- JMeter
+		- Definir métricas
+	- Usar TICKS
+		
+GIT Access to all code
+	- Listo
+
+API published online (Cloud)
+	- Listo	
+
+Requirements
+	Usuarios
+		- Registrar
+				- Id 
+				- Nombre
+				- Email
+				- FechaCreación
+				- Estado
+				- Rol : string
+			
+			- Usuarios comunes
+				- Comprador
+				- Vendedor
+			- Admin
+		- Login
+		- Buscar
+		- Deshabilitar Usuarios
+
+	Items (Logs transactions per user buy / sell)
+		
+		- Publicar un item con foto (CREAR)
+			- Id
+			- Nombre 
+			- Descripción
+			- Estado
+			- Precio
+			- UsuarioId
+			- CategoriaId
+			- FechaPublicación
+			
+		- Comprar el item 
+		- Borrar items
+		- Listar items
+			- Incluir queries
+		- Buscar
+
+	Categorias
+		- Crear categorias
+			- Id
+			- Nombre
+			- Descripción
+		- Listar categorias
+		- Actualizar
+		- Borrar
+		- Buscar
+
+	Propuesta Busquedas:
+		- Buscar 
+			- Usuarios
+			- Items
+			- Categorias
