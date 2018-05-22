@@ -60,14 +60,15 @@ Requirements
 	Items (Logs transactions per user buy / sell)
 		
 		- Publicar un item con foto (CREAR)
-			- Id
-			- Nombre 
-			- Descripción
-			- Estado
-			- Precio
-			- UsuarioId
-			- CategoriaId
-			- FechaPublicación
+			- id : integer
+			- categoriaId : integer
+			- usuarioId : string
+			- nombre : string
+			- descripción : string
+			- precio : decimal
+			- foto : string
+			- fechaPublicación : datetime
+			- estado : integer
 			
 		- Comprar el item 
 		- Borrar items
