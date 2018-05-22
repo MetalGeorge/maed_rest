@@ -1,10 +1,10 @@
 const express = require('express');
-const logger = require('morgan');
+//const logger = require('morgan');
 
 const app = express();
 
-const indexRoutes = require('./routes/index');
-const categoriesRoutes = require('./routes/categories');
+const indexRoutes = require('./app/routes/index');
+const categoriesRoutes = require('./app/routes/categories');
 
 //settings
 app.set('port', process.env.PORT || 3000);
@@ -14,7 +14,7 @@ app.set('view engine', 'ejs');
 
 //middlewares
 // app.use(coors);
-app.use(logger('dev'));
+//app.use(logger('dev'));
 app.use(express.json());
 
 

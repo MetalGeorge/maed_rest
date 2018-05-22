@@ -2,76 +2,107 @@
 CRUD CATEGORIES
 */
 const router = require('express').Router();
-const mongojs = require('mongojs');
-
-// re direccion de la base de datos
-const db = mongojs('tantakatudb', ['categories']);
-
-
-// router.get('/category', (req, res, next) => {
-//   res.send('API here');
-// });
-
-
-//LISTAR - Categoria
-router.get("/categories", (req, res, next) => {
-  db.categories.find((err, categories) => {
-    if(err) throw next(err);
-    res.json(categories);
-  });
-});
+const dbConnection = require('../../config/dbConnection').pool;
 
 //BUSCAR - Categoria
-router.get("/categories/:cod", (req, res, next) => {
-  db.categories.findOne({cod: req.params.cod}, (err, category) => {
-    if (err) return next(err);
-    res.json(category);
+router.get("/categories/:id", (req, res, next) => {
+  dbConnection.getConnection((err, connection) => {
+    connection.query("SELECT * FROM dbideas.category WHERE id='$id'", (err, result) => {
+      res.json(result);
+    });
+    connection.release();
   });
 });
-//CREAR - Categoria
+
+//CREATE - Category
 router.post("/categories", (req, res, next) => {
-  const category = req.body;
-  if(!category.name || !(category.isDone + '')){
-    res.status(400).json({
-      error: 'Bad data'
+  const {category} = req.body;
+  var sql = "INSERT INTO dbideas.category (id, name, description) VALUES('" + req.id + "', '" + req.name + "', 0,'" + req.description + "');";
+  
+  dbConnection.getConnection((err, connection) =>{
+    connection.query(sql, (err, result) =>{
+      if (err) {
+        res.json({
+          error: err
+        })
+      };
     });
-  }else{
-    db.categories.save(category, (err, category) => {
-      if(err) return next(err);
-      res.json(category);
-    });
-  }
+    res.end();
+    connection.release();
+  });
 });
 
-//ELIMINAR - Categoria
+//READ - Category
+router.get("/categories", (req, res, next) => {
+  dbConnection.getConnection((err, connection) => {
+    connection.query('SELECT * FROM dbideas.category ORDER BY id', (err, result) => {
+      res.json(result);
+    });
+    connection.release();
+  });
+});
+
+//UPDATE - Category
+router.put("/categories/:id", (req, res, next) => {
+  const category = req.body;
+  const updatecategory = {};
+  if (category.isDone) {
+    updatecategory.isDone = category.isDone;
+  }
+  if (category.name) {
+    updatecategory.name = category.name;
+  }
+
+  if (!updatecategory) {
+    res.status(400).json({
+      error: 'Bad request'
+    });
+  } else {
+    var sql = "UPDATE dbideas.category SET name = {req.name}, description = {req.description}  WHERE id = {req.id};";
+
+    dbConnection.getConnection((err, connection) => {
+      connection.query(sql, (err, result) => {
+        if (err) {
+          res.json({
+            error: err
+          })
+        };
+      });
+      res.end();
+      connection.release();
+    });
+  }
+
+});
+
+//DELETE - Category
 router.delete("/categories/:id", (req, res, next) => {
   db.categories.remove({_id: mongojs.ObjectId(req.params.id)}, (err, result) => {
     if (err) return next(err);
     res.json(result);
   });
-});
-
-router.put("/categories/:id", (req, res, next) => {
-      const category = req.body;
-      const updatecategory = {};
-      if(category.isDone){
-        updatecategory.isDone = category.isDone;
-      }
-      if(category.name){
-        updatecategory.name = category.name;
-      }
-
-      if(!updatecategory)
-      {
-        res.status(400).json({
-          error: 'Bad request'
-        });
-      }else{
-        db.categories.update({_id: mongojs.ObjectId(req.params.id)}, (err, category) => {
-          if (err) return next(err);
-          res.json(category);
-        });
-      }
+  
+  var sql = "DELETE FROM dbideas.category WHERE id =  " + req.params.id;
+  
+  dbConnection.getConnection((err, connection) => {
+    connection.query(sql, (err, result) => {
+      if (err) {
+        res.json({
+          error: err
+        })
+      };
     });
+    sql = "DELETE FROM dbideas.product WHERE idProduct =  " + req.params.id;
+    connection.query(sql, (err, result) => {
+      if (err) {
+        res.json({
+          error: err
+        })
+      };
+    });
+    res.end();
+    connection.release();
+  });
+});
 
 module.exports = router;
