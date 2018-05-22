@@ -1,20 +1,23 @@
 {
-  "name": "tantakatu",
-  "version": "1.0.0",
-  "description": "API quepermite que los vendedores registrados pueden anunciar artículos para vender. Estos elementos se pueden buscar y organizar en categorías y podrían ser comprados por compradores interesados. Para utilizar esa api utilizar el api key `special-key` .",
-  "main": "index.js",
-  "scripts": {
-	"prestart": "npm install",
-	"start": "node index.js"
-  },
-  "keywords": [
-    "swagger"
-  ],
-  "license": "Unlicense",
-  "private": true,
-  "dependencies": {
-    "connect": "^3.2.0",
-    "js-yaml": "^3.3.0",
-    "swagger-tools": "0.10.1"
-  }
+    "name": "users-api",
+    "version": "1.0.0",
+    "description": "",
+    "main": "server.js",
+    "scripts": {
+        "start": "node src/server.js",
+        "dev": "nodemon src/server.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "amqplib": "^0.5.2",
+        "bcryptjs": "^2.4.3",
+        "body-parser": "^1.18.2",
+        "express": "^4.16.3",
+        "jsonwebtoken": "^8.2.1",
+        "mongoose": "^5.0.1",
+        "winston": "^2.4.2",
+        "winston-daily-rotate-file": "^3.1.3"
+    }
 }
