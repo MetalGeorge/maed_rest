@@ -24,6 +24,7 @@ router.post('/', function(req, res) {
             state: "activo",
             isSeller: req.body.isSeller,
             isBuyer: req.body.isBuyer,
+            isAdmin: req.body.isBuyer,
             password: hashedPassword
         },
         function(err, user) {
