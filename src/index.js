@@ -2,7 +2,7 @@ const express = require('express');
 
 const app = express();
 
-const categoriesRoutes = require('./app/routes/categories');
+const categoriesRoutes = require('./app/routes/categoryRoutes');
 
 //settings
 app.set('port', process.env.PORT || 3000);

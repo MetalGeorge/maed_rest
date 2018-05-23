@@ -1,6 +1,6 @@
-CREATE DATABASE tantakatu;
+CREATE DATABASE dbtantakatu;
 
-USE tantakatu;
+USE dbtantakatu;
 
 CREATE TABLE IF NOT EXISTS category (
   `id` INT(10) unsigned NOT NULL AUTO_INCREMENT,

@@ -2,7 +2,7 @@
 CRUD CATEGORIES
 */
 const router = require('express').Router();
-const dbConnection = require('../../config/dbConnection').pool;
+const Category = require('../models/category');
 
 //BUSCAR - Categoria
 router.get("/categories/:id", (req, res, next) => {
