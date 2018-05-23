@@ -150,3 +150,120 @@
 2018-05-08T19:55:29.644Z - info: Begin Delete User
 2018-05-08T19:55:29.777Z - info: End Delete User
 2018-05-08T19:55:29.808Z - info:  [x] Sent '{"operation":"DELETE_USER","userid":"5af200980cbf3912b8ff6302"}'
+2018-05-22T15:57:46.580Z - info: Express server for Users listening on port3000
+2018-05-22T16:04:10.412Z - info: Begin Register User
+2018-05-22T16:07:07.971Z - info: Express server for Users listening on port3000
+2018-05-22T16:07:15.706Z - info: Begin Register User
+2018-05-22T16:08:43.313Z - info: Begin Register User
+2018-05-22T16:10:27.258Z - info: Begin Register User
+2018-05-22T16:10:29.377Z - info: Begin Register User
+2018-05-22T16:10:30.832Z - info: Begin Register User
+2018-05-22T16:11:07.913Z - info: Begin Register User
+2018-05-22T16:12:31.211Z - info: Begin Register User
+2018-05-22T16:12:31.464Z - info: End Register User
+2018-05-22T20:31:01.510Z - info: Express server for Users listening on port3000
+2018-05-22T20:31:10.222Z - info: Begin Login User
+2018-05-22T20:31:10.464Z - info: End Login User
+2018-05-22T20:33:05.187Z - info: Begin Login User
+2018-05-22T20:33:05.347Z - info: End Login User
+2018-05-22T20:34:14.501Z - info: Begin List Users
+2018-05-22T20:34:14.629Z - info: End List Users
+2018-05-22T20:36:08.286Z - info: Express server for Users listening on port3000
+2018-05-22T20:36:14.854Z - info: Begin List User
+2018-05-22T20:36:15.018Z - info: End List User
+2018-05-22T20:38:47.389Z - info: Begin Update User
+2018-05-22T20:38:47.391Z - info: End Update User
+2018-05-22T20:39:55.250Z - info: Begin Update User
+2018-05-22T20:39:55.250Z - info: End Update User
+2018-05-22T20:46:31.499Z - info: Express server for Users listening on port3000
+2018-05-22T20:47:41.140Z - info: Begin List Users
+2018-05-22T20:47:41.293Z - info: End List Users
+2018-05-22T20:48:03.322Z - info: Begin List Users
+2018-05-22T20:48:03.451Z - info: End List Users
+2018-05-22T20:49:57.040Z - info: Express server for Users listening on port3000
+2018-05-22T20:50:05.124Z - info: Begin List Users
+2018-05-22T20:50:05.285Z - info: End List Users
+2018-05-22T20:56:42.257Z - info: Express server for Users listening on port3000
+2018-05-22T20:56:53.218Z - info: Begin List Users
+2018-05-22T20:56:53.391Z - info: End List Users
+2018-05-22T20:57:01.737Z - info: Begin List Users
+2018-05-22T20:57:01.926Z - info: End List Users
+2018-05-22T20:57:03.022Z - info: Begin List Users
+2018-05-22T20:57:03.149Z - info: End List Users
+2018-05-22T20:57:04.081Z - info: Begin List Users
+2018-05-22T20:57:04.208Z - info: End List Users
+2018-05-22T20:57:04.892Z - info: Begin List Users
+2018-05-22T20:57:05.049Z - info: End List Users
+2018-05-22T21:00:08.155Z - info: Express server for Users listening on port3000
+2018-05-22T21:01:45.010Z - info: Begin Update User
+2018-05-22T21:01:45.283Z - info: End Update User
+2018-05-22T21:03:44.164Z - info: Express server for Users listening on port3000
+2018-05-22T21:04:03.034Z - info: Begin List Users
+2018-05-22T21:04:03.195Z - info: End List Users
+2018-05-22T21:05:14.929Z - info: Express server for Users listening on port3000
+2018-05-22T21:05:24.352Z - info: Begin List Users
+2018-05-22T21:05:24.521Z - info: End List Users
+2018-05-22T21:06:18.667Z - info: Express server for Users listening on port3000
+2018-05-22T21:06:29.475Z - info: Begin List Users
+2018-05-22T21:06:29.633Z - info: End List Users
+2018-05-22T21:07:15.316Z - info: Begin List Users
+2018-05-22T21:07:15.556Z - info: End List Users
+2018-05-22T21:08:29.308Z - info: Express server for Users listening on port3000
+2018-05-22T21:08:33.728Z - info: Begin List Users
+2018-05-22T21:08:33.887Z - info: End List Users
+2018-05-22T21:09:23.536Z - info: Express server for Users listening on port3000
+2018-05-22T21:09:36.574Z - info: Begin List Users
+2018-05-22T21:09:36.715Z - info: End List Users
+2018-05-22T21:10:53.893Z - info: Begin List Users
+2018-05-22T21:10:54.053Z - info: End List Users
+2018-05-22T21:11:02.648Z - info: Begin inactive User
+2018-05-22T21:11:02.649Z - info: End inactive User
+2018-05-22T21:11:29.607Z - info: Begin List Users
+2018-05-22T21:11:29.737Z - info: End List Users
+2018-05-22T21:16:41.088Z - info: Express server for Users listening on port3000
+2018-05-22T21:16:45.841Z - info: Begin inactive User
+2018-05-22T21:16:45.841Z - info: End inactive User
+2018-05-22T21:17:11.006Z - info: Begin inactive User
+2018-05-22T21:17:11.006Z - info: End inactive User
+2018-05-22T21:18:01.884Z - info: Express server for Users listening on port3000
+2018-05-22T21:18:06.638Z - info: Begin inactive User
+2018-05-22T21:18:06.641Z - info: End inactive User
+2018-05-22T21:19:05.349Z - info: Begin List Users
+2018-05-22T21:19:05.486Z - info: End List Users
+2018-05-22T21:19:21.323Z - info: Express server for Users listening on port3000
+2018-05-22T21:19:46.665Z - info: Begin List Users
+2018-05-22T21:19:46.819Z - info: End List Users
+2018-05-22T21:47:43.113Z - info: Begin List Users
+2018-05-22T21:47:43.264Z - info: End List Users
+2018-05-22T21:48:16.845Z - info: Express server for Users listening on port3000
+2018-05-22T21:48:21.701Z - info: Begin List Users
+2018-05-22T21:48:21.865Z - info: End List Users
+2018-05-22T21:48:35.328Z - info: Begin List Users
+2018-05-22T21:48:35.460Z - info: End List Users
+2018-05-22T21:48:39.247Z - info: Begin List Users
+2018-05-22T21:48:39.377Z - info: End List Users
+2018-05-22T21:49:25.325Z - info: Express server for Users listening on port3000
+2018-05-22T21:49:37.436Z - info: Begin List Users
+2018-05-22T21:49:37.593Z - info: End List Users
+2018-05-22T21:50:13.971Z - info: Begin Register User
+2018-05-22T21:50:37.608Z - info: Begin Register User
+2018-05-22T21:50:37.804Z - info: End Register User
+2018-05-22T21:51:24.401Z - info: Begin Register User
+2018-05-22T21:51:24.580Z - info: End Register User
+2018-05-22T21:51:40.987Z - info: Begin Register User
+2018-05-22T21:51:41.144Z - info: End Register User
+2018-05-22T21:51:56.055Z - info: Begin List Users
+2018-05-22T21:51:56.189Z - info: End List Users
+2018-05-22T21:52:13.425Z - info: Begin List Users
+2018-05-22T21:52:13.552Z - info: End List Users
+2018-05-22T21:53:02.231Z - info: Express server for Users listening on port3000
+2018-05-22T21:53:06.095Z - info: Begin List Users
+2018-05-22T21:53:06.317Z - info: End List Users
+2018-05-22T21:53:58.696Z - info: Express server for Users listening on port3000
+2018-05-22T21:54:18.403Z - info: Begin List Users
+2018-05-22T21:54:18.623Z - info: End List Users
+2018-05-22T21:55:06.306Z - info: Begin List Users
+2018-05-22T21:55:06.490Z - info: End List Users
+2018-05-23T02:21:17.721Z - info: Express server for Users listening on port3000
+2018-05-23T02:22:25.726Z - info: Begin List Users
+2018-05-23T02:22:25.884Z - info: End List Users
