@@ -41,7 +41,13 @@ router.post('/', function(req, res) {
 router.get('/', VerifyToken, function(req, res, next) {
     logger.info("Begin List Users");
     console.log(req.query);
-    User.find(req.query, function(err, users) {
+    query = req.query;
+    if (query.limit) {
+        limit = query.limit;
+        delete query["limit"];
+    }
+    console.log(query);
+    User.find(query, function(err, users) {
         if (err) return res.status(500).send("There was a problem finding the users.");
         res.status(200).send(users);
         logger.info("End List Users");
