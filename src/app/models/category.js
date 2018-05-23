@@ -76,6 +76,7 @@ categoryModel.deleteCategory = (id, callback) => {
 
 // const querystring = require('querystring');
 // const sometext = querystring.parse('name=algo&lastname=mas')
+// const sometext = querystring.stringify({'name'='algo', 'lastname'= 'mas'})
 // console.log(sometext);
 
 // categoryModel.searchCategory =
