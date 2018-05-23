@@ -1,0 +1,577 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "Es un ejemplo de un proyecto de Ideas\nver mas .\n[http://raulitoyo.com](http://raulitoyo.com)\n",
+    "version" : "1.0.0",
+    "title" : "Proyecto Ideas (GET)",
+    "termsOfService" : "http://raulitoyo.com/terms/",
+    "contact" : {
+      "email" : "apiteam@raulitoyo.com"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host" : "virtserver.swaggerhub.com",
+  "basePath" : "/raulitoyo3/ProyectoIdeasRaul/1.0.0",
+  "tags" : [ {
+    "name" : "ideas",
+    "description" : "Operaciones de ideas"
+  }, {
+    "name" : "votes",
+    "description" : "Operaciones de votos"
+  }, {
+    "name" : "user",
+    "description" : "Operaciones de usuario"
+  } ],
+  "schemes" : [ "https", "http" ],
+  "paths" : {
+    "/ideas" : {
+      "get" : {
+        "tags" : [ "ideas" ],
+        "summary" : "Lista de ideas",
+        "description" : "Retorna toda una lista de ideas",
+        "operationId" : "getIdeas",
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "object",
+              "additionalProperties" : {
+                "type" : "integer",
+                "format" : "int32"
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "api_key" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "ideas" ],
+        "summary" : "Anadir una idea",
+        "operationId" : "addIdea",
+        "consumes" : [ "application/json", "application/xml" ],
+        "produces" : [ "application/json", "application/xml" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Objeto idea que debe anadirse",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Ideas"
+          }
+        } ],
+        "responses" : {
+          "405" : {
+            "description" : "Invalid input"
+          }
+        },
+        "security" : [ {
+          "petstore_auth" : [ "write:ideas", "read:ideas" ]
+        } ]
+      },
+      "put" : {
+        "tags" : [ "ideas" ],
+        "summary" : "Actualizar una idea existente",
+        "operationId" : "updateidea",
+        "consumes" : [ "application/json", "application/xml" ],
+        "produces" : [ "application/json", "application/xml" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Objeto idea que debe anadirse/modificar",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Ideas"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "Idea not found"
+          },
+          "405" : {
+            "description" : "Validation exception"
+          }
+        },
+        "security" : [ {
+          "petstore_auth" : [ "write:ideas", "read:ideas" ]
+        } ]
+      }
+    },
+    "/ideas/{ideasId}" : {
+      "get" : {
+        "tags" : [ "ideas" ],
+        "summary" : "Encontrar ideas por ID",
+        "description" : "Retorna una simple idea",
+        "operationId" : "getIdeaById",
+        "produces" : [ "application/json", "application/xml" ],
+        "parameters" : [ {
+          "name" : "ideasId",
+          "in" : "path",
+          "description" : "ID de idea para retornar",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/Ideas"
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "Idea not found"
+          }
+        },
+        "security" : [ {
+          "api_key" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "ideas" ],
+        "summary" : "Deletes una idea",
+        "operationId" : "deleteIdea",
+        "produces" : [ "application/json", "application/xml" ],
+        "parameters" : [ {
+          "name" : "api_key",
+          "in" : "header",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "ideasId",
+          "in" : "path",
+          "description" : "Id de idea para eliminar",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "Idea not found"
+          }
+        },
+        "security" : [ {
+          "petstore_auth" : [ "write:ideas", "read:ideas" ]
+        } ]
+      }
+    },
+    "/votes" : {
+      "get" : {
+        "tags" : [ "votes" ],
+        "summary" : "Lista de votos",
+        "description" : "Retorna toda una lista de votos",
+        "operationId" : "getVote",
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "object",
+              "additionalProperties" : {
+                "type" : "integer",
+                "format" : "int32"
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "api_key" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "votes" ],
+        "summary" : "Anadir un voto",
+        "operationId" : "addVote",
+        "consumes" : [ "application/json", "application/xml" ],
+        "produces" : [ "application/json", "application/xml" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Objeto voto que debe anadirse",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Ideas"
+          }
+        } ],
+        "responses" : {
+          "405" : {
+            "description" : "Invalid input"
+          }
+        },
+        "security" : [ {
+          "petstore_auth" : [ "write:ideas", "read:ideas" ]
+        } ]
+      },
+      "put" : {
+        "tags" : [ "votes" ],
+        "summary" : "Actualizar un voto existente",
+        "operationId" : "updateVote",
+        "consumes" : [ "application/json", "application/xml" ],
+        "produces" : [ "application/json", "application/xml" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Objeto voto que debe anadirse/modificar",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Ideas"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "Idea not found"
+          },
+          "405" : {
+            "description" : "Validation exception"
+          }
+        },
+        "security" : [ {
+          "petstore_auth" : [ "write:ideas", "read:ideas" ]
+        } ]
+      }
+    },
+    "/votes/{votesId}" : {
+      "get" : {
+        "tags" : [ "votes" ],
+        "summary" : "Encontrar votos por ID",
+        "description" : "Retorna un simple voto",
+        "operationId" : "getVotoById",
+        "produces" : [ "application/json", "application/xml" ],
+        "parameters" : [ {
+          "name" : "votesId",
+          "in" : "path",
+          "description" : "ID de voto para retornar",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/Ideas"
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "Idea not found"
+          }
+        },
+        "security" : [ {
+          "api_key" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "votes" ],
+        "summary" : "Elimina un voto",
+        "operationId" : "deleteVote",
+        "produces" : [ "application/json", "application/xml" ],
+        "parameters" : [ {
+          "name" : "api_key",
+          "in" : "header",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "votesId",
+          "in" : "path",
+          "description" : "Votes id para eliminar",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "Vote not found"
+          }
+        },
+        "security" : [ {
+          "petstore_auth" : [ "write:ideas", "read:ideas" ]
+        } ]
+      }
+    },
+    "/user" : {
+      "post" : {
+        "tags" : [ "user" ],
+        "summary" : "Create user",
+        "description" : "This can only be done by the logged in user.",
+        "operationId" : "createUser",
+        "produces" : [ "application/json", "application/xml" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Created user object",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/User"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/user/login" : {
+      "get" : {
+        "tags" : [ "user" ],
+        "summary" : "Logs user into the system",
+        "operationId" : "loginUser",
+        "produces" : [ "application/json", "application/xml" ],
+        "parameters" : [ {
+          "name" : "username",
+          "in" : "query",
+          "description" : "The user name for login",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "password",
+          "in" : "query",
+          "description" : "The password for login in clear text",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "string"
+            },
+            "headers" : {
+              "X-Rate-Limit" : {
+                "type" : "integer",
+                "format" : "int32",
+                "description" : "calls per hour allowed by the user"
+              },
+              "X-Expires-After" : {
+                "type" : "string",
+                "format" : "date-time",
+                "description" : "date in UTC when token expires"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid username/password supplied"
+          }
+        }
+      }
+    },
+    "/user/logout" : {
+      "get" : {
+        "tags" : [ "user" ],
+        "summary" : "Logs out current logged in user session",
+        "operationId" : "logoutUser",
+        "produces" : [ "application/json", "application/xml" ],
+        "parameters" : [ ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/user/{username}" : {
+      "get" : {
+        "tags" : [ "user" ],
+        "summary" : "Get user by user name",
+        "operationId" : "getUserByName",
+        "produces" : [ "application/json", "application/xml" ],
+        "parameters" : [ {
+          "name" : "username",
+          "in" : "path",
+          "description" : "The name that needs to be fetched. Use user1 for testing.",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/User"
+            }
+          },
+          "400" : {
+            "description" : "Invalid username supplied"
+          },
+          "404" : {
+            "description" : "User not found"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "user" ],
+        "summary" : "Updated user",
+        "description" : "This can only be done by the logged in user.",
+        "operationId" : "updateUser",
+        "produces" : [ "application/json", "application/xml" ],
+        "parameters" : [ {
+          "name" : "username",
+          "in" : "path",
+          "description" : "name that need to be updated",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Updated user object",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/User"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Invalid user supplied"
+          },
+          "404" : {
+            "description" : "User not found"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "user" ],
+        "summary" : "Delete user",
+        "description" : "This can only be done by the logged in user.",
+        "operationId" : "deleteUser",
+        "produces" : [ "application/json", "application/xml" ],
+        "parameters" : [ {
+          "name" : "username",
+          "in" : "path",
+          "description" : "The name that needs to be deleted",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Invalid username supplied"
+          },
+          "404" : {
+            "description" : "User not found"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions" : {
+    "petstore_auth" : {
+      "type" : "oauth2",
+      "authorizationUrl" : "http://ideas.raulitoyo.com/oauth/dialog",
+      "flow" : "implicit",
+      "scopes" : {
+        "write:ideas" : "Modifica ideas en tu cuenta",
+        "read:ideas" : "Lee sus ideas"
+      }
+    },
+    "api_key" : {
+      "type" : "apiKey",
+      "name" : "api_key",
+      "in" : "header"
+    }
+  },
+  "definitions" : {
+    "Ideas" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "idea" : {
+          "type" : "string"
+        },
+        "proposer" : {
+          "type" : "string"
+        },
+        "votes" : {
+          "type" : "integer",
+          "format" : "int32"
+        }
+      },
+      "example" : {
+        "idea" : "idea",
+        "proposer" : "proposer",
+        "votes" : 6,
+        "id" : 0
+      },
+      "xml" : {
+        "name" : "Ideas"
+      }
+    },
+    "Votes" : {
+      "type" : "object",
+      "properties" : {
+        "iduser" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "ididea" : {
+          "type" : "string"
+        }
+      },
+      "xml" : {
+        "name" : "Category"
+      }
+    },
+    "User" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "email" : {
+          "type" : "string"
+        },
+        "password" : {
+          "type" : "string"
+        },
+        "userStatus" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "User Status"
+        }
+      },
+      "example" : {
+        "password" : "password",
+        "userStatus" : 6,
+        "name" : "name",
+        "id" : 0,
+        "email" : "email"
+      },
+      "xml" : {
+        "name" : "User"
+      }
+    }
+  },
+  "externalDocs" : {
+    "description" : "Find out more about Swagger",
+    "url" : "http://swagger.io"
+  }
+}
