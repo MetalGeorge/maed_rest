@@ -3,8 +3,8 @@ CRUD CATEGORIES
 */
 const router = require('express').Router();
 const Category = require('../models/category');
-
-//BUSCAR - Categoria
+/*
+//SEARCH - Categoria
 router.get("/categories/:id", (req, res, next) => {
   dbConnection.getConnection((err, connection) => {
     connection.query("SELECT * FROM dbideas.category WHERE id='$id'", (err, result) => {
@@ -13,95 +13,64 @@ router.get("/categories/:id", (req, res, next) => {
     connection.release();
   });
 });
+*/
 
 //CREATE - Category
-router.post("/categories", (req, res, next) => {
-  const {category} = req.body;
-  var sql = "INSERT INTO dbideas.category (id, name, description) VALUES('" + req.id + "', '" + req.name + "', 0,'" + req.description + "');";
-  
-  dbConnection.getConnection((err, connection) =>{
-    connection.query(sql, (err, result) =>{
-      if (err) {
-        res.json({
-          error: err
-        })
-      };
-    });
-    res.end();
-    connection.release();
+router.post("/categories", (req, res) => {
+  const categoryData = {
+    id:null,
+    name: req.body.name,
+    description: req.body.description
+  };
+  Category.insertCategory(categoryData, (err, data) =>{
+    if(data && data.insertCategory){
+      res.json({
+        success: true,
+        data: data
+      })
+    }
   });
 });
 
 //READ - Category
-router.get("/categories", (req, res, next) => {
-  dbConnection.getConnection((err, connection) => {
-    connection.query('SELECT * FROM dbideas.category ORDER BY id', (err, result) => {
-      res.json(result);
-    });
-    connection.release();
+router.get("/categories", (req, res) => {
+  Category.getCategories((err, data) => {
+    res.json(data);
   });
 });
 
 //UPDATE - Category
-router.put("/categories/:id", (req, res, next) => {
-  const category = req.body;
-  const updatecategory = {};
-  if (category.isDone) {
-    updatecategory.isDone = category.isDone;
-  }
-  if (category.name) {
-    updatecategory.name = category.name;
-  }
-
-  if (!updatecategory) {
-    res.status(400).json({
-      error: 'Bad request'
-    });
-  } else {
-    var sql = "UPDATE dbideas.category SET name = {req.name}, description = {req.description}  WHERE id = {req.id};";
-
-    dbConnection.getConnection((err, connection) => {
-      connection.query(sql, (err, result) => {
-        if (err) {
-          res.json({
-            error: err
-          })
-        };
-      });
-      res.end();
-      connection.release();
-    });
-  }
-
+router.put("/categories/:id", (req, res) => {
+  const categoryData = {
+    id: req.params.id,
+    name: req.body.name,
+    description: req.body.description
+  };
+  Category.updateCategory(categoryData, (err, data) => {
+    if(data && data.msg){
+      res.json(data)
+    }else{
+      res.json({
+        success: false,
+        "msg": "error"
+      })
+    }
+  })
 });
 
 //DELETE - Category
-router.delete("/categories/:id", (req, res, next) => {
-  db.categories.remove({_id: mongojs.ObjectId(req.params.id)}, (err, result) => {
-    if (err) return next(err);
-    res.json(result);
-  });
-  
-  var sql = "DELETE FROM dbideas.category WHERE id =  " + req.params.id;
-  
-  dbConnection.getConnection((err, connection) => {
-    connection.query(sql, (err, result) => {
-      if (err) {
-        res.json({
-          error: err
-        })
-      };
-    });
-    sql = "DELETE FROM dbideas.product WHERE idProduct =  " + req.params.id;
-    connection.query(sql, (err, result) => {
-      if (err) {
-        res.json({
-          error: err
-        })
-      };
-    });
-    res.end();
-    connection.release();
+router.delete("/categories/:id", (req, res) => {
+  Category.deleteCategory(req.params.id, (err, data) => {    
+    if(data && data.msg === 'deleted'){
+      res.json({
+        success:true,
+        data: data
+      })
+    }else{
+      res.status(500).json({
+        "msg": "error"
+      })
+    }
   });
 });
 
