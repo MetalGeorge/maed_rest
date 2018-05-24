@@ -19,7 +19,7 @@ router.post('/', function(req, res) {
         if (!user) return res.status(404).send('No user found.');
         var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
         if (!passwordIsValid) return res.status(401).send({ auth: false, token: null });
-        var token = jwt.sign({ id: user._id, name: user.name }, config.secret, {
+        var token = jwt.sign({ id: user._id, isSeller: user.isSeller, isBuyer: user.idBuyer, isAdmin: user.isAdmin }, config.secret, {
             expiresIn: 86400 // expires in 24 hours
         });
         res.status(200).send({ auth: true, token: token });
@@ -28,13 +28,13 @@ router.post('/', function(req, res) {
 });
 
 //
-router.get('/me', VerifyToken, function(req, res, next) {
-    logger.info("Begin me");
+router.get('/', VerifyToken, function(req, res, next) {
+    logger.info("Begin ");
     User.findById(req.userId, { password: 0 }, function(err, user) {
         if (err) return res.status(500).send("There was a problem finding the user.");
         if (!user) return res.status(404).send("No user found.");
         res.status(200).send(user);
-        logger.info("End me");
+        logger.info("End ");
     });
 });
 
