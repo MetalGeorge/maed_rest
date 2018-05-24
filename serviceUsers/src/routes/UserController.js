@@ -24,7 +24,7 @@ router.post('/', function(req, res) {
             state: "activo",
             isSeller: req.body.isSeller,
             isBuyer: req.body.isBuyer,
-            isAdmin: req.body.isBuyer,
+            isAdmin: req.body.isAdmin,
             password: hashedPassword
         },
         function(err, user) {
@@ -43,16 +43,17 @@ router.get('/', VerifyToken, function(req, res, next) {
     logger.info("Begin List Users");
     console.log(req.query);
     query = req.query;
+    var limit = 0;
     if (query.limit) {
-        limit = query.limit;
+        limit = parseInt(query.limit);
         delete query["limit"];
     }
     console.log(query);
     User.find(query, function(err, users) {
         if (err) return res.status(500).send("There was a problem finding the users.");
         res.status(200).send(users);
-        logger.info("End List Users");
-    });
+    }).limit(limit);
+    logger.info("End List Users");
 });
 
 // GETS A SINGLE USER FROM THE DATABASE
