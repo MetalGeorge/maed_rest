@@ -6,7 +6,8 @@ var UserSchema = new mongoose.Schema({
     dateCreate: String,
     state: String,
     isSeller: String,
-    isBuyer: String
+    isBuyer: String,
+    isAdmin: String
 });
 mongoose.model('User', UserSchema);
 
