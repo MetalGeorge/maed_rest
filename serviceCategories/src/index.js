@@ -1,7 +1,5 @@
 const express = require('express');
-
 const app = express();
-
 const categoriesRoutes = require('./app/routes/categoryRoutes');
 
 //settings
@@ -13,6 +11,8 @@ app.use(express.json());
 
 
 // routes
+// app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.json());
 app.use('/ttkt/v1', categoriesRoutes);
 
 app.listen(app.get('port'), () => {
