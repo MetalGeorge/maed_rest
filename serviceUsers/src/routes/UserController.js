@@ -32,7 +32,7 @@ router.post('/', function(req, res) {
                     password: hashedPassword
                 },
                 function(err, user) {
-                    if (err) return res.status(500).send("There was a problem registering the user.")
+                    if (err) return res.status(500).send(err.message)
                         // create a token
                     var token = jwt.sign({ id: user._id, isSeller: user.isSeller, isBuyer: user.idBuyer, isAdmin: user.isAdmin }, config.secret, {
                         expiresIn: 86400 // expires in 24 hours

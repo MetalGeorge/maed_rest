@@ -4,26 +4,25 @@ var config = require('../config/config');
 function verifyToken(req, res, next) {
     var token = req.headers['authorization']
     token = token.substring(7);
-    console.log(req.baseUrl);
-    console.log(req.route.methods);
-    console.log(req.route.methods.delete);
-
-
     if (!token)
         return res.status(403).send({ auth: false, message: 'No token provided.' });
     jwt.verify(token, config.secret, function(err, decoded) {
         if (err)
             return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+        // Autorizacion para las rutas get
         if (req.route.methods.get) {
-            if (decoded.isAdmin != 'si')
-                return res.status(403).send({ auth: false, message: 'forbidden to delete user' });
+            if (decoded.isAdmin != 'yes' && req.baseUrl != "/api/v1/login")
+                return res.status(403).send({ auth: false, message: 'forbidden get info user' });
         }
+        // Autorizacion para las rutas put    
         if (req.route.methods.put) {
-
+            if (decoded.isAdmin != 'yes' && decoded.id != req.url.substring(1))
+                return res.status(403).send({ auth: false, message: 'forbidden update user' });
         }
-        if (req.route.methods.delete == true) {
-            console(req)
-            if ((decoded.isAdmin != 'si') || (decoded.userId == 4))
+        // Autorizacion para las rutas delete    
+        if (req.route.methods.delete) {
+
+            if (decoded.isAdmin != 'yes' && decoded.id != req.url.substring(1))
                 return res.status(403).send({ auth: false, message: 'forbidden to delete user' });
         }
         req.userId = decoded.id;
