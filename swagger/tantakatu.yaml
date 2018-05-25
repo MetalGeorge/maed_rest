@@ -133,6 +133,21 @@ paths:
       security:
         - api_key: []
   /login:
+    get:
+      tags:
+        - login
+      summary: Obtener los datos del usuario del token
+      description: 'debe haber enviado el token'
+      operationId: loginGetUser
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: datos usuario
+          schema:
+            $ref: '#/definitions/Users' 
+      security:
+        - api_key: []        
     post:
       tags:
         - login
