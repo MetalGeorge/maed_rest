@@ -25,7 +25,7 @@ router.post('/', function(req, res) {
                     name: req.body.name,
                     email: req.body.email,
                     dateCreate: new Date(),
-                    state: "activo",
+                    state: "active",
                     isSeller: req.body.isSeller,
                     isBuyer: req.body.isBuyer,
                     isAdmin: req.body.isAdmin,
@@ -76,7 +76,7 @@ router.get('/:id', VerifyToken, function(req, res, next) {
 router.delete('/:id', VerifyToken, function(req, res, next) {
     logger.info("Begin inactive User");
     console.log("inactivo");
-    User.findByIdAndUpdate(req.params.id, { state: "inactivo" }, { new: true }, function(err, user) {
+    User.findByIdAndUpdate(req.params.id, { state: "inactive" }, { new: true }, function(err, user) {
         if (err) return res.status(500).send("There was a problem inactive the user.");
         res.status(200).send(user);
     });
