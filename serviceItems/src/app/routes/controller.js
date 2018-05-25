@@ -5,18 +5,22 @@ var bcrypt = require('bcryptjs');
 var dateFormat = require('dateformat');
 var config = require('../../config/config');
 var logger = require('../../config/log');
+var mysqlModel = require('mysql-model');
+var mysql = require('mysql');
 
 module.exports = app => {
-
+    /*
     app.use(function(item, req, res, next) {
+        console.log(item);
         res.status(200).send(item);
     });
+    */
 
     /* GET items listing. */
-    //app.get('/api/v1/items', VerifyToken, (req, res) => {     
-    app.get('/api/v1/items', (req, res) => {
+    app.get('/api/v1/items', VerifyToken, (req, res) => {     
         logger.info("GET: /api/v1/items");
-
+        console.log("GET: /api/v1/items");
+        
         var sql = "SELECT * FROM dbtantakatu.item ORDER BY id";
         console.log(sql);
 
@@ -29,8 +33,7 @@ module.exports = app => {
     });
 
     /* GET a item. */
-    //app.get('/api/v1/items/:id', VerifyToken, (req, res) => {     
-    app.get('/api/v1/items/:id', (req, res) => {
+    app.get('/api/v1/items/:id', VerifyToken, (req, res) => {     
         logger.info("GET: /api/v1/items/:id");
 
         var sql = "SELECT * FROM dbtantakatu.item WHERE id=" + req.params.id + ";";
@@ -45,19 +48,15 @@ module.exports = app => {
     });
 
     /* POST item creating. */
-    //app.post('/api/v1/items', VerifyToken, (req, res) => {     
-    app.post('/api/v1/items', (req, res) => {
+    app.post('/api/v1/items', VerifyToken, (req, res) => {     
         logger.info("POST: /api/v1/items");
 
-        console.log(req.userid + "\n");
-        req.userid = "A;HJADFHLSEHRJLSDKJHSLFDKJ";
-
-        var publicationdate = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss");
+        var publicationDate = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss");
 
         const body = req.body;
         var sql = "INSERT INTO dbtantakatu.item (categoryid, userid, name, description, price, photo, publicationdate) VALUES (" +
-                body.categoryid + ", '" + req.userid + "', '" + body.name +  "', '" + body.description +
-                "', " + body.price + ", '" + body.photo + "', '" + publicationdate + "');";
+                body.categoryid + ", '" + req.userId + "', '" + body.name +  "', '" + body.description +
+                "', " + body.price + ", '" + body.photo + "', '" + publicationDate + "');";
         console.log(sql);
 
         dbConnection.getConnection(function(err, connection){
@@ -74,12 +73,10 @@ module.exports = app => {
     });
 
     /* PUT item updating. */
-    //app.put('/api/v1/items/:id', VerifyToken, (req, res) => {     
-    app.put('/api/v1/items/:id', (req, res) => {
+    app.put('/api/v1/items/:id', VerifyToken, (req, res) => {     
         logger.info("PUT: /api/v1/items/:id");
 
-        console.log(req.userid + "\n");
-        req.userid = "A;HJADFHLSEHRJLSDKJHSLFDKJ";
+        //var sqluser = "SELECT COUNT(*) FROM dbtantakatu.item WHERE userid=" + req.userId + ";";
 
         const body = req.body;
         var sql = "UPDATE dbtantakatu.item SET categoryid=" + body.categoryid + ", name='" + body.name + 
@@ -101,12 +98,8 @@ module.exports = app => {
     });
 
     /* DELETE item. */
-    //app.delete('/api/v1/items/:id', VerifyToken, (req, res) => {     
-    app.delete('/api/v1/items/:id', (req, res) => {
+    app.delete('/api/v1/items/:id', VerifyToken, (req, res) => {     
         logger.info("DELETE: /api/v1/items/:id");
-
-        console.log(req.userid + "\n");
-        req.userid = "A;HJADFHLSEHRJLSDKJHSLFDKJ";
 
         const body = req.body;
         var sql = "DELETE FROM  dbtantakatu.item WHERE id=" + req.params.id + ";";
