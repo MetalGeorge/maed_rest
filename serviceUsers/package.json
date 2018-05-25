@@ -17,6 +17,7 @@
         "express": "^4.16.3",
         "jsonwebtoken": "^8.2.1",
         "mongoose": "^5.0.1",
+        "node-odata": "^0.7.16",
         "winston": "^2.4.2",
         "winston-daily-rotate-file": "^3.1.3"
     }
