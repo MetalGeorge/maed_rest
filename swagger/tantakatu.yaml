@@ -55,7 +55,9 @@ paths:
         200:
           description: OK
           schema:
-            $ref: '#/definitions/Users'
+            type: array  
+            items:
+              $ref: '#/definitions/Users'
       security:
         - api_key: []
   /users/{userid}:
@@ -178,7 +180,7 @@ paths:
 securityDefinitions:
   api_key:
     type: apiKey
-    name: x-access-token
+    name: authorization
     in: header
 definitions:
   Users:
