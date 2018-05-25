@@ -102,7 +102,7 @@ module.exports = app => {
         logger.info("DELETE: /api/v1/items/:id");
 
         const body = req.body;
-        var sql = "DELETE FROM  dbtantakatu.item WHERE id=" + req.params.id + ";";
+        var sql = "DELETE FROM dbtantakatu.item WHERE id=" + req.params.id + ";";
         console.log(sql);
 
         dbConnection.getConnection(function(err, connection){
@@ -116,5 +116,37 @@ module.exports = app => {
             res.end();
             connection.release();
         });
+    });
+
+        //app.patch('/items', VerifyToken, (req, res) => {
+    app.patch('/api/v1/items/',  (req, res) => {
+        logger.info("Begin purchase item");
+        // validate that userid and item to buy is not the same
+        // validate that the item's status is "On Sale"
+        
+        var sqlPurchase = "INSERT INTO dbtantakatu.purchase (ItemId, UserId, purchaseDate) VALUES ('" + req.itemid + "', '" + req.userId + "', CURDATE());";
+        //console.log(sql);
+        var sqlUpdateItem = "UPDATE dbtantakatu.item SET state = 0 WHERE itemId = "+ req.itemid + ";";}
+
+        dbConnection.getConnection(function(err, connection) {
+            connection.query(sqlPurchase, function(err, result) {
+                if (err) {
+                    res.json({ error: err })
+                };
+                console.log("purchase performed");
+                logger.info("Idea inserted");
+            });
+            connection.query(sqlUpdateItem, function(err, result) {
+                if (err) {
+                    res.json({ error: err })
+                };
+                console.log("Idea inserted");
+                logger.info("Idea inserted");
+            });            
+            res.end();
+            connection.release();
+        });
+
+        logger.info("End Insert ideas");
     });
 };
