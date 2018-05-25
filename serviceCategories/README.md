@@ -41,18 +41,18 @@ API published online (Cloud)
 Requirements
 	Usuarios
 		- Registrar
-				- Id :int 
-				- Nombre : string
-				- Email : string
-				- FechaCreación :Timestamp
-				- Estado : string
-				- Rol : string
-			
+				- id :int 
+				- name : string
+				- email : string
+				- dateCreate : timestamp
+				- state : string
+				- isSeller : string
+				- isBuyer : string
+				- password : string
 			- Usuarios comunes
 				- Comprador
-		
-		- Vendedor
-			- Admin
+				- Vendedor
+			    - Admin
 		- Login
 		- Buscar
 		- Deshabilitar Usuarios
