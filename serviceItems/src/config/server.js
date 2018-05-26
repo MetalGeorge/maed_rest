@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const app = express();
 
 // settings
-app.set('port', process.env.PORT || 8888);
+app.set('port', process.env.PORT || 3002);
 app.set('view engine', 'ejs');
 //app.set('views', path.join(__dirname, '../app/views'));
 // middlewares
