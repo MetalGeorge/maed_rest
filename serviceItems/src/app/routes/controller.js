@@ -5,23 +5,72 @@ var bcrypt = require('bcryptjs');
 var dateFormat = require('dateformat');
 var config = require('../../config/config');
 var logger = require('../../config/log');
-var mysqlModel = require('mysql-model');
 var mysql = require('mysql');
 
 module.exports = app => {
-    /*
     app.use(function(item, req, res, next) {
         console.log(item);
         res.status(200).send(item);
     });
-    */
 
     /* GET items listing. */
     app.get('/api/v1/items', VerifyToken, (req, res) => {     
         logger.info("GET: /api/v1/items");
         console.log("GET: /api/v1/items");
-        
-        var sql = "SELECT * FROM dbtantakatu.item ORDER BY id";
+
+        console.log("-------------------\n");
+
+        var sql = "";
+        var filter = "";
+        if (typeof req.query.categoryid != 'undefined'){
+            if (filter == "")
+                filter = " categoryid = " + req.query.categoryid;
+            else
+                filter = " AND categoryid = " + req.query.categoryid;
+        }
+        if (typeof req.query.userid != 'undefined'){
+            if (filter == "")
+                filter = " userid = '" + req.query.userid + "'";
+            else
+                filter = " AND userid = '" + req.query.userid + "'";
+        }
+        if (typeof req.query.name != 'undefined'){
+            if (filter == "")
+                filter = " name LIKE '%" + req.query.name + "%'";
+            else
+                filter = " AND name LIKE '%" + req.query.name + "%'";
+        }
+        if (typeof req.query.state != 'undefined'){
+            if (filter == "")
+                filter = " state = " + req.query.state;
+            else
+                filter = " AND state = " + req.query.state;
+        }
+
+        var fields = "*";
+        if(typeof req.query.fields != 'undefined') {
+            fields = req.query.fields;
+        }
+
+        var sort = "";
+        if(typeof req.query.sort != 'undefined') {
+            sort = " ORDER BY " + req.query.sort;
+            if(typeof req.query.order != 'undefined') {
+                sort += " " + req.query.order;
+            }
+            console.log(sort);
+        }
+
+        var limit = "";
+        if(typeof req.query.limit != 'undefined') {
+            limit = " LIMIT " + req.query.limit;
+        }
+
+        if (filter == "")
+            sql = "SELECT " + fields + " FROM dbtantakatu.item " + sort + limit;
+        else
+            sql = "SELECT " + fields + " FROM dbtantakatu.item WHERE " + filter + sort + limit;
+
         console.log(sql);
 
         dbConnection.getConnection(function(err, connection) {
@@ -36,7 +85,12 @@ module.exports = app => {
     app.get('/api/v1/items/:id', VerifyToken, (req, res) => {     
         logger.info("GET: /api/v1/items/:id");
 
-        var sql = "SELECT * FROM dbtantakatu.item WHERE id=" + req.params.id + ";";
+        var fields = "*";
+        if(typeof req.query.fields != 'undefined') {
+            fields = req.query.fields;
+        }
+
+        var sql = "SELECT " + fields + " FROM dbtantakatu.item WHERE id=" + req.params.id + ";";
         console.log(sql);
 
         dbConnection.getConnection(function(err, connection) {
@@ -102,7 +156,7 @@ module.exports = app => {
         logger.info("DELETE: /api/v1/items/:id");
 
         const body = req.body;
-        var sql = "DELETE FROM dbtantakatu.item WHERE id=" + req.params.id + ";";
+        var sql = "DELETE FROM  dbtantakatu.item WHERE id=" + req.params.id + ";";
         console.log(sql);
 
         dbConnection.getConnection(function(err, connection){
@@ -116,37 +170,5 @@ module.exports = app => {
             res.end();
             connection.release();
         });
-    });
-
-        //app.patch('/items', VerifyToken, (req, res) => {
-    app.patch('/api/v1/items/',  (req, res) => {
-        logger.info("Begin purchase item");
-        // validate that userid and item to buy is not the same
-        // validate that the item's status is "On Sale"
-        
-        var sqlPurchase = "INSERT INTO dbtantakatu.purchase (ItemId, UserId, purchaseDate) VALUES ('" + req.itemid + "', '" + req.userId + "', CURDATE());";
-        //console.log(sql);
-        var sqlUpdateItem = "UPDATE dbtantakatu.item SET state = 0 WHERE itemId = "+ req.itemid + ";";}
-
-        dbConnection.getConnection(function(err, connection) {
-            connection.query(sqlPurchase, function(err, result) {
-                if (err) {
-                    res.json({ error: err })
-                };
-                console.log("purchase performed");
-                logger.info("Idea inserted");
-            });
-            connection.query(sqlUpdateItem, function(err, result) {
-                if (err) {
-                    res.json({ error: err })
-                };
-                console.log("Idea inserted");
-                logger.info("Idea inserted");
-            });            
-            res.end();
-            connection.release();
-        });
-
-        logger.info("End Insert ideas");
     });
 };
