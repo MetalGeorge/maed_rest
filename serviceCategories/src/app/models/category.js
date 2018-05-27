@@ -76,14 +76,23 @@ categoryModel.deleteCategory = (id, callback) => {
 categoryModel.searchCategory = (categoryFilter, callback) => {
   if (dbConnection) {
     
-    const sql = `
+    let findId = (categoryFilter.id != null ? `${dbConnection.escape(categoryFilter.id)}` : `'%'`);
+    let findName = (categoryFilter.name != null ? `${dbConnection.escape(categoryFilter.name.concat('%'))}` : `'%'`);
+    let findDescription = (categoryFilter.description != null ? `${dbConnection.escape(categoryFilter.description.concat('%'))}` : `'%'`);
+    let consulta = `
       SELECT *
       FROM category 
-      WHERE id = ${dbConnection.escape(categoryFilter.id)} 
+      WHERE id LIKE ${findId}
+      AND name LIKE ${findName}
+      AND description LIKE ${findDescription}
       `
-      // AND name = $ {dbConnection.escape(categoryFilter.name)} 
-      // AND description = $ {dbConnection.escape(categoryFilter.description)}
-      
+    let sql;
+    if(categoryFilter.limit != null){
+      sql = consulta.concat('LIMIT ' + categoryFilter.limit);
+    }else{
+      sql = consulta;
+    }
+  
     dbConnection.query(sql, (err, rows) => {
       if (err) {
         throw err;

@@ -17,7 +17,8 @@ router.get("/categories", (req, res) => {
   const filter = {
     id,
     name,
-    description
+    description,
+    limit
   } = req.query;
 
   Category.searchCategory(filter, (err, data) => {
