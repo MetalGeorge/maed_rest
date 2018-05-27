@@ -30,13 +30,12 @@ categoryModel.insertCategory = (categoryData, callback) => {
 
 categoryModel.updateCategory = (categoryData, callback) => {
   if (dbConnection) {
-
     const sql = `
       UPDATE category SET
       name = ${dbConnection.escape(categoryData.name)},
       description = ${dbConnection.escape(categoryData.description)}
       WHERE id = ${dbConnection.escape(categoryData.id)}
-      `
+      ` 
     dbConnection.query(sql, (err, result) => {
       if (err) {
         throw err;
@@ -74,11 +73,25 @@ categoryModel.deleteCategory = (id, callback) => {
   }
 };
 
-// const querystring = require('querystring');
-// const sometext = querystring.parse('name=algo&lastname=mas')
-// const sometext = querystring.stringify({'name'='algo', 'lastname'= 'mas'})
-// console.log(sometext);
-
-// categoryModel.searchCategory =
+categoryModel.searchCategory = (categoryFilter, callback) => {
+  if (dbConnection) {
+    
+    const sql = `
+      SELECT *
+      FROM category 
+      WHERE id = ${dbConnection.escape(categoryFilter.id)} 
+      `
+      // AND name = $ {dbConnection.escape(categoryFilter.name)} 
+      // AND description = $ {dbConnection.escape(categoryFilter.description)}
+      
+    dbConnection.query(sql, (err, rows) => {
+      if (err) {
+        throw err;
+      } else {
+        callback(null, rows);
+      }
+    })
+  }
+};
 
 module.exports = categoryModel;

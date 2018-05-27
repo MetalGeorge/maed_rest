@@ -10,17 +10,21 @@ let bcrypt = require('bcryptjs');
 let config = require('../../config/config');
 let logger = require('../../config/log');
 
-/*
+
 //SEARCH - Categoria
-router.get("/categories/:id", (req, res, next) => {
-  dbConnection.getConnection((err, connection) => {
-    connection.query("SELECT * FROM dbideas.category WHERE id='$id'", (err, result) => {
-      res.json(result);
-    });
-    connection.release();
+router.get("/categories", (req, res) => {
+   
+  const filter = {
+    id,
+    name,
+    description
+  } = req.query;
+
+  Category.searchCategory(filter, (err, data) => {
+    res.json(data);
   });
 });
-*/
+
 
 //CREATE - Category
 router.post("/categories", VerifyToken, (req, res) => {
