@@ -1,4 +1,4 @@
-CREATE TABLE item (
+CREATE TABLE dbtantakatu.item (
 	id int(11) NOT NULL AUTO_INCREMENT,
 	categoryid int(11) NOT NULL,
 	userid varchar(100) NOT NULL,
