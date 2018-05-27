@@ -1,9 +1,12 @@
 const mysql = require('mysql');
 
 let pool = mysql.createPool({
-    host: "servidormaedwebserviciosweb.mysql.database.azure.com",
-    user: "adminjoraca@servidormaedwebserviciosweb",
-    password: "Maestria.123",
+    // host: "34.207.70.205",
+    // user: "devroot",
+    // password: "devroot.123",
+    host: "localhost",
+    user: "root",
+    password: "",
     database: 'dbtantakatu'
 });
 
