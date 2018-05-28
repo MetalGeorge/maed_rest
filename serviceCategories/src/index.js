@@ -11,7 +11,7 @@ app.use(express.json());
 
 
 // routes
-app.use('/app/v1', categoriesRoutes);
+app.use('/api/v1', categoriesRoutes);
 
 app.listen(app.get('port'), () => {
   console.log('server on port ', app.get('port'));
