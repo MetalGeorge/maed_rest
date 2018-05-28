@@ -626,4 +626,23 @@
 2018-05-25T19:48:40.687Z - info: Begin 
 2018-05-25T19:48:40.813Z - info: End 
 2018-05-25T19:49:09.511Z - info: Begin 
-2018-05-25T19:49:09.637Z - info: End
+2018-05-25T19:49:09.637Z - info: End2018-05-28T02:32:12.956Z - info: Express server for Users listening on port3000
+2018-05-28T02:32:53.917Z - info: Express server for Users listening on port3000
+2018-05-28T02:35:18.831Z - info: Begin Update User
+2018-05-28T02:35:18.961Z - info: End Update User
+2018-05-28T02:56:01.765Z - info: Begin Update User
+2018-05-28T02:56:01.871Z - info: End Update User
+2018-05-28T02:56:24.716Z - info: Begin Update User
+2018-05-28T02:56:24.787Z - info: End Update User
+2018-05-28T03:00:56.478Z - info: Begin Update User
+2018-05-28T03:00:56.540Z - info: End Update User
+2018-05-28T03:00:59.880Z - info: Begin Update User
+2018-05-28T03:00:59.946Z - info: End Update User
+2018-05-28T03:04:16.610Z - info: Begin Update User
+2018-05-28T03:04:16.704Z - info: End Update User
+2018-05-28T03:04:27.282Z - info: Begin Update User
+2018-05-28T03:04:27.361Z - info: End Update User
+2018-05-28T03:04:44.299Z - info: Begin Update User
+2018-05-28T03:04:44.363Z - info: End Update User
+2018-05-28T03:04:45.847Z - info: Begin Update User
+2018-05-28T03:04:45.911Z - info: End Update User
