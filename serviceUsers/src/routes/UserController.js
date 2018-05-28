@@ -34,7 +34,7 @@ router.post('/', function(req, res) {
                 function(err, user) {
                     if (err) return res.status(500).send(err.message)
                         // create a token
-                    var token = jwt.sign({ id: user._id, isSeller: user.isSeller, isBuyer: user.idBuyer, isAdmin: user.isAdmin }, config.secret, {
+                    var token = jwt.sign({ id: user._id, isSeller: user.isSeller, isBuyer: user.isBuyer, isAdmin: user.isAdmin }, config.secret, {
                         expiresIn: 86400 // expires in 24 hours
                     });
                     res.status(200).send({ auth: true, token: token });
