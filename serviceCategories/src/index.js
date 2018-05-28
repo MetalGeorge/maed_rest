@@ -11,9 +11,7 @@ app.use(express.json());
 
 
 // routes
-// app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(bodyParser.json());
-app.use('/ttkt/v1', categoriesRoutes);
+app.use('/app/v1', categoriesRoutes);
 
 app.listen(app.get('port'), () => {
   console.log('server on port ', app.get('port'));

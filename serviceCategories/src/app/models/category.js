@@ -30,13 +30,12 @@ categoryModel.insertCategory = (categoryData, callback) => {
 
 categoryModel.updateCategory = (categoryData, callback) => {
   if (dbConnection) {
-
     const sql = `
       UPDATE category SET
       name = ${dbConnection.escape(categoryData.name)},
       description = ${dbConnection.escape(categoryData.description)}
       WHERE id = ${dbConnection.escape(categoryData.id)}
-      `
+      ` 
     dbConnection.query(sql, (err, result) => {
       if (err) {
         throw err;
@@ -74,11 +73,34 @@ categoryModel.deleteCategory = (id, callback) => {
   }
 };
 
-// const querystring = require('querystring');
-// const sometext = querystring.parse('name=algo&lastname=mas')
-// const sometext = querystring.stringify({'name'='algo', 'lastname'= 'mas'})
-// console.log(sometext);
-
-// categoryModel.searchCategory =
+categoryModel.searchCategory = (categoryFilter, callback) => {
+  if (dbConnection) {
+    
+    let findId = (categoryFilter.id != null ? `${dbConnection.escape(categoryFilter.id)}` : `'%'`);
+    let findName = (categoryFilter.name != null ? `${dbConnection.escape(categoryFilter.name.concat('%'))}` : `'%'`);
+    let findDescription = (categoryFilter.description != null ? `${dbConnection.escape(categoryFilter.description.concat('%'))}` : `'%'`);
+    let consulta = `
+      SELECT *
+      FROM category 
+      WHERE id LIKE ${findId}
+      AND name LIKE ${findName}
+      AND description LIKE ${findDescription}
+      `
+    let sql;
+    if(categoryFilter.limit != null){
+      sql = consulta.concat('LIMIT ' + categoryFilter.limit);
+    }else{
+      sql = consulta;
+    }
+  
+    dbConnection.query(sql, (err, rows) => {
+      if (err) {
+        throw err;
+      } else {
+        callback(null, rows);
+      }
+    })
+  }
+};
 
 module.exports = categoryModel;
