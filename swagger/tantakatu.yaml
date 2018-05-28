@@ -1,213 +1,584 @@
-swagger: '2.0'
+swagger: "2.0"
 info:
-  description: 
-    'API quepermite que los vendedores registrados pueden anunciar artículos para
-    vender. Estos elementos se pueden buscar y organizar en categorías y podrían
-    ser comprados por compradores interesados.' 
-  version: 1.0.0
-  title: 'Tantakatu'
-  termsOfService: 'http://191.237.255.179'
+  description: "API quepermite que los vendedores registrados pueden anunciar artí\
+    culos para vender. Estos elementos se pueden buscar y organizar en categorías\
+    \ y podrían ser comprados por compradores interesados."
+  version: "1.0.0"
+  title: "Tantakatu"
+  termsOfService: "http://18.217.107.124"
   contact:
-    email: 'carlosmontellano@gmail.com'
+    email: "carlosmontellano@gmail.com"
   license:
-    name: Apache 2.0
-    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-host: 191.237.255.179
-basePath: /api/v1
-tags:
-  - name: users
-    description: modulo de usuarios
-    externalDocs:
-      description: Encontrar mas informacion
-      url: 'http://191.237.255.179'
-schemes:
-  - http
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+# host: "18.217.107.124"
+# basePath: "/api/v1"
+# schemes:
+# - "http"
 paths:
   /users:
-    post:
-      tags:
-        - users
-      summary: Crear un usuario
-      description: Cualquier usuario puede registrarse.
-      operationId: createUser
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: body
-          description: Crea el objeto usuario
-          required: true
-          schema:
-            $ref: '#/definitions/Users'
-      responses:
-        '200':
-          description: usuario creado
-          schema:
-            $ref: '#/definitions/Users'
-        '400':
-          description: Datos incompletos
     get:
       tags:
-        - users
-      summary: Obtener todos los usuarios
-      description: solo usarios autenticados  pueden obtener
+      - "users"
+      summary: "Obtener los usuarios de acuerdo a parametros indicados"
+      description: "solo usarios autenticados  pueden obtener"
+      parameters:
+      - name: "name"
+        in: "query"
+        required: false
+        type: "string"
+        description: "nombre del usuario."
+      - name: "email"
+        in: "query"
+        required: false
+        type: "string"
+        description: "Correo Electronico."
+      - name: "password"
+        in: "query"
+        required: false
+        type: "string"
+        description: "Contraseña."
+      - name: "isSeller"
+        in: "query"
+        required: false
+        type: "string"
+        description: "Es vendedor responder yes or no"
+      - name: "isBuyer"
+        in: "query"
+        required: false
+        type: "string"
+        description: "Es vendedor comprador yes or no"
+      - name: "isAdmin"
+        in: "query"
+        required: false
+        type: "string"
+        description: "Es administrador responder yes or no."
+      - name: "limit"
+        in: "query"
+        required: false
+        type: "string"
+        description: "nro de filasa devolver."
       responses:
         200:
-          description: OK
+          description: "OK"
           schema:
-            type: array  
+            type: "array"
             items:
-              $ref: '#/definitions/Users'
+              $ref: "#/definitions/Users"
       security:
-        - api_key: []
+      - api_key: []
+    post:
+      tags:
+      - "users"
+      summary: "Crear un usuario"
+      description: "Cualquier usuario puede registrarse."
+      operationId: "createUser"
+      consumes:
+      - "multipart/form-data"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "formData"
+        required: true
+        type: "string"
+        description: "nombre del usuario."
+      - name: "email"
+        in: "formData"
+        required: true
+        type: "string"
+        description: "Correo Electronico."
+      - name: "password"
+        in: "formData"
+        required: true
+        type: "string"
+        description: "Contraseña."
+      - name: "isSeller"
+        in: "formData"
+        required: true
+        type: "string"
+        description: "Es vendedor responder yes or no"
+      - name: "isBuyer"
+        in: "formData"
+        required: true
+        type: "string"
+        description: "Es vendedor comprador yes or no"
+      - name: "isAdmin"
+        in: "formData"
+        required: true
+        type: "string"
+        description: "Es administrador responder yes or no."
+      responses:
+        200:
+          description: "usuario creado"
+          schema:
+            $ref: "#/definitions/Users"
+        400:
+          description: "Datos incompletos"
   /users/{userid}:
     get:
       tags:
-        - users
-      summary: Obtener el usuario por id
-      description: ''
-      operationId: getUserById
+      - "users"
+      summary: "Obtener el usuario por id"
+      description: ""
+      operationId: "getUserById"
       produces:
-        - application/json
-      parameters:
-        - name: userid
-          in: path
-          description: 'Se requiereautenticacion. '
-          required: true
-          type: string
+      - "application/json"
+      parameters: []
       responses:
-        '200':
-          description: successful operation
+        200:
+          description: "successful operation"
           schema:
-            $ref: '#/definitions/Users'
-        '400':
-          description: Invalid username supplied
-        '404':
-          description: User not found
+            $ref: "#/definitions/Users"
+        400:
+          description: "Invalid username supplied"
+        404:
+          description: "User not found"
       security:
-        - api_key: []
+      - api_key: []
     put:
       tags:
-        - users
-      summary: Actualizar Usuario
-      description: Solo puede actualizar un usuario logueado
-      operationId: updateUser
-      produces:
-        - application/json
+      - "users"
+      summary: "Actualizar Usuario"
+      description: "Solo puede actualizar un usuario logueado"
+      operationId: "updateUser"
+      consumes:
+      - "application/x-www-form-urlencoded"
       parameters:
-        - name: userid
-          in: path
-          description: el id de usuario es necesario para actualizar
-          required: true
-          type: string
-        - in: body
-          name: body
-          description: Actualizar objeto usuario
-          required: true
-          schema:
-            $ref: '#/definitions/Users'
+      - name: "name"
+        in: "formData"
+        required: true
+        type: "string"
+        description: "nombre del usuario."
+      - name: "email"
+        in: "formData"
+        required: true
+        type: "string"
+        description: "Correo Electronico."
+      - name: "password"
+        in: "formData"
+        required: true
+        type: "string"
+        description: "Contraseña."
+      - name: "isSeller"
+        in: "formData"
+        required: true
+        type: "string"
+        description: "Es vendedor responder yes or no"
+      - name: "isBuyer"
+        in: "formData"
+        required: true
+        type: "string"
+        description: "Es vendedor comprador yes or no"
+      - name: "isAdmin"
+        in: "formData"
+        required: true
+        type: "string"
+        description: "Es administrador responder yes or no."
       responses:
-        '400':
-          description: Invalid user supplied
-        '404':
-          description: User not found
+        400:
+          description: "Invalid user supplied"
+        404:
+          description: "User not found"
       security:
-        - api_key: []
+      - api_key: []
     delete:
       tags:
-        - users
-      summary: 'Eliminar un usuario '
-      description: Solo se puede eliminar un usuario logueado.
-      operationId: deleteUser
-      produces:
-        - application/json
-      parameters:
-        - name: userid
-          in: path
-          description: el usuario sera borrado
-          required: true
-          type: string
+      - "users"
+      summary: "Eliminar un usuario "
+      description: "Solo se puede eliminar un usuario logueado."
+      operationId: "deleteUser"
+      parameters: []
       responses:
-        '400':
-          description: Usuario Invalido
-        '404':
-          description: Usuario no encontrado
+        400:
+          description: "Usuario Invalido"
+        404:
+          description: "Usuario no encontrado"
       security:
-        - api_key: []
+      - api_key: []
+    parameters:
+    - name: "userid"
+      in: "path"
+      required: true
+      type: "string"
+      description: "Se requiereautenticacion. "
+  /odata/users:
+    get:
+      tags:
+      - "odata"
+      summary: "Obtener todos los usuarios"
+      description: "solo usarios autenticados  pueden obtener"
+      parameters:
+      - name: "$select"
+        in: "query"
+        required: false
+        type: "string"
+        description: "seleccionar campos"
+      - name: "$top"
+        in: "query"
+        required: false
+        type: "string"
+        description: "desde"
+      - name: "$skip"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "$filter"
+        in: "query"
+        required: false
+        type: "string"
+        description: "Filtro odata"
+      - name: "$metadata"
+        in: "query"
+        required: false
+        type: "string"
+        description: "Metedatada del recurso"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Users"
   /login:
     get:
       tags:
-        - login
-      summary: Obtener los datos del usuario del token
-      description: 'debe haber enviado el token'
-      operationId: loginGetUser
+      - "login"
+      summary: "Obtener los datos del usuario del token"
+      description: "debe haber enviado el token"
+      operationId: "loginGetUser"
       produces:
-        - application/json
+      - "application/json"
+      parameters: []
       responses:
-        '200':
-          description: datos usuario
+        200:
+          description: "datos usuario"
           schema:
-            $ref: '#/definitions/Users' 
+            $ref: "#/definitions/Users"
       security:
-        - api_key: []        
+      - api_key: []
     post:
       tags:
-        - login
-      summary: Autenticar al usuario en el sistema
-      description: ''
-      operationId: loginUser
+      - "login"
+      summary: "Autenticar al usuario en el sistema"
+      operationId: "loginUser"
+      consumes:
+      - "application/x-www-form-urlencoded"
       produces:
-        - application/json
+      - "application/json"
       parameters:
-        - name: username
-          in: query
-          description: Nombre de usuario
-          required: true
-          type: string
-        - name: password
-          in: query
-          description: Contraseña
-          required: true
-          type: string
+      - name: "email"
+        in: "formData"
+        required: true
+        type: "string"
+        description: "Correo Electronico"
+      - name: "password"
+        in: "formData"
+        required: true
+        type: "string"
+        description: "Contraseña"
       responses:
-        '200':
-          description: autenticado correctamente
+        200:
+          description: "autenticado correctamente"
           schema:
-            type: string
-        '400':
-          description: username/password invalido
-    
+            $ref: "#/definitions/Auth"
+        400:
+          description: "username/password invalido"
+  /items:
+    get:
+      tags:
+      - "items"
+      summary: "Obtener los artículos de acuerdo a parametros indicados"
+      description: "solo artículos autenticados  pueden obtener"
+      parameters:
+      - name: "name"
+        in: "query"
+        required: false
+        type: "string"
+        description: "nombre del articulo."
+      - name: "description"
+        in: "query"
+        required: false
+        type: "string"
+        description: "Descripción del artículo"
+      - name: "categoryid"
+        in: "query"
+        required: false
+        type: "integer"
+        description: "Identificador de categoria"
+      - name: "price"
+        in: "query"
+        required: false
+        type: "integer"
+        description: "Precio del artículo"
+      - name: "publicationDate"
+        in: "query"
+        required: false
+        type: "string"
+        description: "fecha de publicación a la venta"
+      - name: "state"
+        in: "query"
+        required: false
+        type: "integer"
+        description: "Estado del articulo 0 - vendido / 1 - publicado"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Items"
+      security:
+      - api_key: []
+    post:
+      tags:
+      - "items"
+      summary: "Crear un articulo"
+      description: "Cualquier articulo puede registrarse."
+      operationId: "createItem"
+      consumes:
+      - "multipart/form-data"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "formData"
+        required: true
+        type: "string"
+        description: "nombre del articulo."
+      - name: "description"
+        in: "formData"
+        required: true
+        type: "string"
+        description: "Descripción del artículo"
+      - name: "categoryid"
+        in: "formData"
+        required: true
+        type: "integer"
+        description: "Categoria del artículo"
+      - name: "price"
+        in: "formData"
+        required: true
+        type: "integer"
+        description: "Precio del artículo"
+      - name: "photo"
+        in: "formData"
+        required: false
+        type: "string"
+        description: "Archivo a subir"
+      responses:
+          200:
+            description: "articulo creado"
+            schema:
+              $ref: "#/definitions/Items"
+          400:
+            description: "Datos incompletos"
+  /items/{Itemid}:
+    get:
+      tags:
+      - "items"
+      summary: "Obtener el articulo por id"
+      description: ""
+      operationId: "getItemById"
+      produces:
+      - "application/json"
+      parameters:
+        []
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Items"
+        400:
+          description: "Invalid Item id supplied"
+        401:
+          description: "Unauthorized"
+        403:
+          description: "No token provided."
+        404:
+          description: "Item not found"
+    put:
+      tags:
+      - "items"
+      summary: "Actualizar articulo"
+      description: "Solo puede actualizar un articulo logueado"
+      operationId: "updateItem"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      parameters:
+      - name: "name"
+        in: "formData"
+        required: true
+        type: "string"
+        description: "nombre del articulo."
+      - name: "description"
+        in: "formData"
+        required: true
+        type: "string"
+        description: "Descripción del artículo"
+      - name: "categoryid"
+        in: "formData"
+        required: true
+        type: "integer"
+        description: "Categoria del artículo"
+      - name: "price"
+        in: "formData"
+        required: true
+        type: "integer"
+        description: "Precio del artículo"
+      - name: "photo"
+        in: "formData"
+        required: false
+        type: "string"
+        description: "Archivo a subir"
+      responses:
+        400:
+          description: "Invalid Item supplied"
+        401:
+          description: "Unauthorized"
+        403:
+          description: "No token provided."
+        404:
+          description: "Item not found"
+    patch:
+      tags:
+      - "items"
+      summary: "Comprar articulo"
+      description: "El usuario logueado puede comprar un árticulo de otro usuario que no haya sido aún vendido"
+      operationId: "purchaseItem"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      parameters:
+      - name: "itemid"
+        in: "formData"
+        required: true
+        type: "integer"
+        description: "id del item a comprar"
+      responses:
+        400:
+          description: "Invalid Item supplied"
+        401:
+          description: "Unauthorized"
+        403:
+          description: "No token provided."
+        404:
+          description: "Item not found"          
+      security:
+      - api_key: []
+    delete:
+      tags:
+      - "items"
+      summary: "Eliminar un articulo "
+      description: "Eliminar un articulo"
+      operationId: "deleteItem"
+      parameters: []
+      responses:
+        400:
+          description: "Invalid Item supplied"
+        401:
+          description: "Unauthorized"
+        403:
+          description: "No token provided."
+        404:
+          description: "Item not found"      
+      security:
+      - api_key: []
+    parameters:
+    - name: "Itemid"
+      in: "path"
+      required: true
+      type: "string"
+      description: "Se requiereautenticacion. "
 securityDefinitions:
   api_key:
-    type: apiKey
-    name: authorization
-    in: header
+    type: "apiKey"
+    name: "authorization"
+    in: "header"
 definitions:
   Users:
-    type: object
+    type: "object"
     properties:
       id:
-        type: string
-        description: 'User id,llave unica'
+        type: "string"
+        description: "User id,llave unica"
       name:
-        type: string
-        description: 'Nombre completo del usuario: nombres apellidos'
+        type: "string"
+        description: "Nombre completo del usuario: nombres apellidos"
       email:
-        type: string
+        type: "string"
       dateCreate:
-        type: string
-        format: dateTime
+        type: "string"
       state:
-        type: string
+        type: "string"
       isSeller:
-        type: string
+        type: "string"
       isBuyer:
-        type: string
+        type: "string"
+      isAdmin:
+        type: "string"
       password:
-        type: string
-        description: Estado del Usuario
-    xml:
-      name: Users
-externalDocs:
-  description: Mas acerca de Tantakatu
-  url: 'http://191.237.255.179'
+        type: "string"
+        description: "Estado del Usuario"
+    example:
+      password: "password"
+      isSeller: "isSeller"
+      name: "name"
+      id: "id"
+      state: "state"
+      isAdmin: "isAdmin"
+      dateCreate: "dateCreate"
+      isBuyer: "isBuyer"
+      email: "email"
+  Items:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Item id,llave unica"
+      name:
+        type: "string"
+        description: "Nombre del artículo"
+      description:
+        type: "string"
+      publicationdate:
+        type: "string"
+      state:
+        type: "integer"
+        description: "Estado del artículo vendido 0 / en venta 1"
+      userid:
+        type: "string"
+        description: "Id del usuario que ha creado el artículo"
+      price:
+        type: "integer"
+        description: "Precio del Artículo"
+      photo:
+        type: "string"
+      categoryid:
+        type: "integer"
+        description: "Categoria del Artículo"
+    example:
+        id: "1"
+        categoryid: "1"
+        userid: "5b0b14e117d6c212e0b76b1e"
+        name: "name"
+        description: "description"
+        price: 120
+        photo: "photo"
+        publicationdate": "2018-05-27T16:43:34.000Z"
+        state: 0
+  Auth:
+    type: "object"
+    properties:
+      auth:
+        type: "string"
+      token:
+        type: "string"
+    example:
+      auth: "auth"
+      token: "token"
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /MaedWebRest/JoRaCaFraTantakatuAPI/1.0.0
+schemes:
+ - https
+ - http
