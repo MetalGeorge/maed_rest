@@ -1,0 +1,15 @@
+{
+    "name": "users-odata-api",
+    "version": "1.0.0",
+    "description": "",
+    "scripts": {
+        "start": "node src/index.js",
+        "dev": "nodemon src/index.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "JORACAFRA",
+    "license": "ISC",
+    "dependencies": {
+        "node-odata": "^0.7.16"
+    }
+}

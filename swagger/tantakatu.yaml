@@ -1,0 +1,213 @@
+swagger: '2.0'
+info:
+  description: 
+    'API quepermite que los vendedores registrados pueden anunciar artículos para
+    vender. Estos elementos se pueden buscar y organizar en categorías y podrían
+    ser comprados por compradores interesados.' 
+  version: 1.0.0
+  title: 'Tantakatu'
+  termsOfService: 'http://191.237.255.179'
+  contact:
+    email: 'carlosmontellano@gmail.com'
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+host: 191.237.255.179
+basePath: /api/v1
+tags:
+  - name: users
+    description: modulo de usuarios
+    externalDocs:
+      description: Encontrar mas informacion
+      url: 'http://191.237.255.179'
+schemes:
+  - http
+paths:
+  /users:
+    post:
+      tags:
+        - users
+      summary: Crear un usuario
+      description: Cualquier usuario puede registrarse.
+      operationId: createUser
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Crea el objeto usuario
+          required: true
+          schema:
+            $ref: '#/definitions/Users'
+      responses:
+        '200':
+          description: usuario creado
+          schema:
+            $ref: '#/definitions/Users'
+        '400':
+          description: Datos incompletos
+    get:
+      tags:
+        - users
+      summary: Obtener todos los usuarios
+      description: solo usarios autenticados  pueden obtener
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array  
+            items:
+              $ref: '#/definitions/Users'
+      security:
+        - api_key: []
+  /users/{userid}:
+    get:
+      tags:
+        - users
+      summary: Obtener el usuario por id
+      description: ''
+      operationId: getUserById
+      produces:
+        - application/json
+      parameters:
+        - name: userid
+          in: path
+          description: 'Se requiereautenticacion. '
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Users'
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: User not found
+      security:
+        - api_key: []
+    put:
+      tags:
+        - users
+      summary: Actualizar Usuario
+      description: Solo puede actualizar un usuario logueado
+      operationId: updateUser
+      produces:
+        - application/json
+      parameters:
+        - name: userid
+          in: path
+          description: el id de usuario es necesario para actualizar
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Actualizar objeto usuario
+          required: true
+          schema:
+            $ref: '#/definitions/Users'
+      responses:
+        '400':
+          description: Invalid user supplied
+        '404':
+          description: User not found
+      security:
+        - api_key: []
+    delete:
+      tags:
+        - users
+      summary: 'Eliminar un usuario '
+      description: Solo se puede eliminar un usuario logueado.
+      operationId: deleteUser
+      produces:
+        - application/json
+      parameters:
+        - name: userid
+          in: path
+          description: el usuario sera borrado
+          required: true
+          type: string
+      responses:
+        '400':
+          description: Usuario Invalido
+        '404':
+          description: Usuario no encontrado
+      security:
+        - api_key: []
+  /login:
+    get:
+      tags:
+        - login
+      summary: Obtener los datos del usuario del token
+      description: 'debe haber enviado el token'
+      operationId: loginGetUser
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: datos usuario
+          schema:
+            $ref: '#/definitions/Users' 
+      security:
+        - api_key: []        
+    post:
+      tags:
+        - login
+      summary: Autenticar al usuario en el sistema
+      description: ''
+      operationId: loginUser
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: Nombre de usuario
+          required: true
+          type: string
+        - name: password
+          in: query
+          description: Contraseña
+          required: true
+          type: string
+      responses:
+        '200':
+          description: autenticado correctamente
+          schema:
+            type: string
+        '400':
+          description: username/password invalido
+    
+securityDefinitions:
+  api_key:
+    type: apiKey
+    name: authorization
+    in: header
+definitions:
+  Users:
+    type: object
+    properties:
+      id:
+        type: string
+        description: 'User id,llave unica'
+      name:
+        type: string
+        description: 'Nombre completo del usuario: nombres apellidos'
+      email:
+        type: string
+      dateCreate:
+        type: string
+        format: dateTime
+      state:
+        type: string
+      isSeller:
+        type: string
+      isBuyer:
+        type: string
+      password:
+        type: string
+        description: Estado del Usuario
+    xml:
+      name: Users
+externalDocs:
+  description: Mas acerca de Tantakatu
+  url: 'http://191.237.255.179'
