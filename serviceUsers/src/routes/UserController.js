@@ -18,7 +18,7 @@ router.post('/', function(req, res) {
     var hashedPassword = bcrypt.hashSync(req.body.password, 8);
     //console.log(req.body.email)
     User.findOne({ "email": req.body.email }, function(err, user) {
-        console.log(user);
+        //        console.log(user);
         if (user) return res.status(500).send("this email exists");
         else
             User.create({
@@ -86,7 +86,7 @@ router.delete('/:id', VerifyToken, function(req, res, next) {
 // UPDATES A SINGLE USER IN THE DATABASE
 router.put('/:id', VerifyToken, function(req, res) {
     logger.info("Begin Update User");
-    console.log(req);
+    //   console.log(req);
     User.findByIdAndUpdate(req.params.id, req.body, { new: true }, function(err, user) {
         if (err) return res.status(500).send("There was a problem updating the user.");
         res.status(200).send(user);
