@@ -1,12 +1,18 @@
 var VerifyToken = require('./VerifyToken');
 var dbConnection = require('../../config/dbConnection').pool;
+var config = require('../../config/config');
+var logger = require('../../config/log');
+var secrets = require('../../config/secrets');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
 var dateFormat = require('dateformat');
-var config = require('../../config/config');
-var logger = require('../../config/log');
 var mysql = require('mysql');
 var fileUpload = require('express-fileupload')
+var multer = require('multer');
+var cloudinary = require('cloudinary');
+var bodyParser = require('body-parser');
+
+var upload = multer({ dest: './photos/' })
 
 module.exports = app => {
     app.use(function(item, req, res, next) {
@@ -14,12 +20,12 @@ module.exports = app => {
         res.status(200).send(item);
     });
 
+    cloudinary.config(secrets.cloudinary);
+
     /* GET items listing. */
     app.get('/api/v1/items', VerifyToken, (req, res) => {     
         logger.info("GET: /api/v1/items");
         console.log("GET: /api/v1/items");
-
-        console.log("-------------------\n");
 
         var sql = "";
         var filter = "";
@@ -59,7 +65,6 @@ module.exports = app => {
             if(typeof req.query.order != 'undefined') {
                 sort += " " + req.query.order;
             }
-            console.log(sort);
         }
 
         var limit = "";
@@ -73,10 +78,13 @@ module.exports = app => {
             sql = "SELECT " + fields + " FROM dbtantakatu.item WHERE " + filter + sort + limit;
 
         console.log(sql);
+        logger.info("Consulta" + sql);
 
         dbConnection.getConnection(function(err, connection) {
             connection.query(sql, (err, result) => {
                 res.json(result);
+                console.log("Query items by " + req.userId);
+                logger.info("Query items by " + req.userId);
             });
             connection.release();
         });
@@ -97,61 +105,67 @@ module.exports = app => {
         dbConnection.getConnection(function(err, connection) {
             connection.query(sql, (err, result) => {
                 res.json(result);
+                console.log("Query items by " + req.userId);
+                logger.info("Query items by " + req.userId);
             });
             connection.release();
         });
     });
 
     /* POST item creating. */
-    app.post('/api/v1/items', VerifyToken, (req, res) => {     
+    app.post('/api/v1/items', VerifyToken, upload.single('photo'), (req, res) => {     
         logger.info("POST: /api/v1/items");
 
+        var publicationDate = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss");
+        console.log(req.body);
+        const body = req.body;
+        var sql = "";
+        var photourl = "";
 
-        if (req.isSeller != 'yes')
-        {
-            console.log("You need to be a seller");
-            return res.status(401).send("You need to be a seller");
-        }
-        else
-        {
-            var publicationDate = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss");
-            const body = req.body;
-            var sql = "";
-            if (body.photo)
-            {
-                var file = req.files.uploaded_image;
-                var img_name = file.name;
-                if(file.mimetype == "image/jpeg" ||file.mimetype == "image/png"||file.mimetype == "image/gif" )
-                {
-                  file.mv('images/'+file.name, function(err) {
-                                 
-                   if (err) 
-                     return res.status(500).send(err);
-                    });
-                };
+        console.log(req.file);
 
-                 sql = "INSERT INTO dbtantakatu.item (categoryid, userid, name, description, price, photo, publicationdate) VALUES (" +
-                    body.categoryid + ", '" + req.userId + "', '" + body.name +  "', '" + body.description +
-                    "', " + body.price + ", '" + img_name + "', '" + publicationDate + "');";
-                console.log(sql);
-            }
-            else 
-            {
-                sql = "INSERT INTO dbtantakatu.item (categoryid, userid, name, description, price, publicationdate) VALUES (" +
-                    body.categoryid + ", '" + req.userId + "', '" + body.name +  "', '" + body.description +
-                    "', " + body.price + ", '" + publicationDate + "');";
-                console.log(sql);
-            }
+        if (!req.file) {
+            console.log("No file received");
+
+            sql = "INSERT INTO dbtantakatu.item (categoryid, userid, name, description, price, publicationdate) VALUES (" +
+            body.categoryid + ", '" + req.userId + "', '" + body.name +  "', '" + body.description +
+            "', " + body.price + ", '" + publicationDate + "');";
+
+            console.log(sql);
             dbConnection.getConnection(function(err, connection){
                 connection.query(sql, function(err, result) {
                     if (err) {
                         res.json({ error: err })
-                    };
-                    logger.info("Item created");
-                    console.log("Item created");                
+                    };   
+                    console.log("Item created without photo by " + req.userId);
+                    logger.info("Item created without photo by " + req.userId);             
                 });
                 res.end();
                 connection.release();
+            });  
+        } else {
+            console.log('file received');
+            
+            cloudinary.uploader.upload(req.file.path, function(resultclo) {
+                console.log(resultclo) 
+                photourl = resultclo.url;
+
+                sql = "INSERT INTO dbtantakatu.item (categoryid, userid, name, description, price, photo, publicationdate) VALUES (" +
+                    body.categoryid + ", '" + req.userId + "', '" + body.name +  "', '" + body.description +
+                    "', " + body.price + ", '" + photourl + "', '" + publicationDate + "');";
+
+                console.log(sql);
+                dbConnection.getConnection(function(err, connection){
+                    connection.query(sql, function(err, result) {
+                        if (err) {
+                            res.json({ error: err })
+                        };
+                        console.log("Item created with photo by " + req.userId);
+                        logger.info("Item created with photo by " + req.userId);            
+                    });
+                    res.end();
+                    connection.release();
+                });  
             });
         }
     });
@@ -159,8 +173,6 @@ module.exports = app => {
     /* PUT item updating. */
     app.put('/api/v1/items/:id', VerifyToken, (req, res) => {     
         logger.info("PUT: /api/v1/items/:id");
-
-        //var sqluser = "SELECT COUNT(*) FROM dbtantakatu.item WHERE userid=" + req.userId + ";";
 
         const body = req.body;
         var sql = "UPDATE dbtantakatu.item SET categoryid=" + body.categoryid + ", name='" + body.name + 
@@ -173,8 +185,8 @@ module.exports = app => {
                 if (err) {
                     res.json({ error: err })
                 };
-                logger.info("Item updated");
-                console.log("Item updated");                
+                console.log("Item updated by " + req.userId);
+                logger.info("Item updated by " + req.userId);                               
             });
             res.end();
             connection.release();
@@ -194,77 +206,75 @@ module.exports = app => {
                 if (err) {
                     res.json({ error: err })
                 };
-                logger.info("Item deleted");
-                console.log("Item deleted");                
+                logger.info("Item deleted by " + req.userId);
+                console.log("Item deleted by " + req.userId);                
             });
             res.end();
             connection.release();
         });
     });
         
+    /* PATCH item. */
     app.patch('/api/v1/items/', VerifyToken, (req, res) => {
+        logger.info("PATCH: /api/v1/items/");
 
-        if (req.isBuyer != 'yes')
-        {
-            console.log("You need to be a Buyer");
-            return res.status(401).send("You need to be a Buyer");
-        }
-        else
-        {
-            const body = req.body;
-            var sqlCheckItem = "SELECT userid, state FROM dbtantakatu.item WHERE id = "+ body.itemId + ";"
+        const body = req.body;
+        var sqlCheckItem = "SELECT userid, state FROM dbtantakatu.item WHERE id = "+ body.itemId + ";"
 
-            var itemUserId = "";
-            var itemState = -1;
-            dbConnection.getConnection(function(err, connection) {
-                connection.query(sqlCheckItem, function(err, result) {
-                    if (err) {
-                        res.json({ error: err })
-                    };
-                    console.log(result);
-                    itemUserId = result[0].userid;
-                    itemState  = result[0].state;
-                    console.log("Item user id " + itemUserId);
-                    console.log("Buyer user id " + req.userId);
+        var itemUserId = "";
+        var itemState = -1;
+        dbConnection.getConnection(function(err, connection) {
+            connection.query(sqlCheckItem, function(err, result) {
+                if (err) {
+                    res.json({ error: err })
+                };
+                console.log(result);
+                itemUserId = result[0].userid;
+                itemState  = result[0].state;
+                console.log("Item user id " + itemUserId);
+                console.log("Buyer user id " + req.userId);
 
-                    if (itemUserId == req.userId)
-                    {
-                        console.log("Buyer and Seller are the same");
-                        res.end();
-                        connection.release();
-                    }
-                    else if (itemState == 0)
-                    {
-                        console.log("Item is already sold !");
-                        res.end();
-                        connection.release();
-                    }
-                    else
-                    {
-                     var sqlPurchase = "INSERT INTO dbtantakatu.purchase (ItemId, UserId, purchaseDate) VALUES (" + body.itemId + ", '" + req.userId + "', NOW());";
-                            console.log(sqlPurchase);
-                            var sqlUpdateItem = "UPDATE dbtantakatu.item SET state = 0 WHERE id = "+ body.itemId + ";";
-                            console.log(sqlUpdateItem);
-                            dbConnection.getConnection(function(err, connection) {
-                                connection.query(sqlPurchase, function(err, result) {
-                                    if (err) {
-                                        res.json({ error: err })
-                                    };
-                                });
-                                connection.query(sqlUpdateItem, function(err, result) {
-                                    if (err) {
-                                        res.json({ error: err })
-                                    };
-                                    logger.info("PURCHASE - USER: '" + req.userId + "'");
-                                });            
-                                res.end();
-                                connection.release();
+                if (itemUserId == req.userId)
+                {
+                    console.log("Buyer and Seller are the same");
+                    res.end();
+                    connection.release();
+                }
+                else if (itemState == 0)
+                {
+                    console.log("Item is already sold !");
+                    res.end();
+                    connection.release();
+                }
+                else
+                {
+                 var sqlPurchase = "INSERT INTO dbtantakatu.purchase (ItemId, UserId, purchaseDate) VALUES (" + body.itemId + ", '" + req.userId + "', NOW());";
+                        console.log(sqlPurchase);
+                        var sqlUpdateItem = "UPDATE dbtantakatu.item SET state = 0 WHERE id = "+ body.itemId + ";";
+                        console.log(sqlUpdateItem);
+                        dbConnection.getConnection(function(err, connection) {
+                            connection.query(sqlPurchase, function(err, result) {
+                                if (err) {
+                                    res.json({ error: err })
+                                };
+                                console.log("purchase performed");
+                                logger.info("purchase performed");
                             });
-                    };
-                });
-                });
-        
-            logger.info("End purchase perform");
-        }
+                            connection.query(sqlUpdateItem, function(err, result) {
+                                if (err) {
+                                    res.json({ error: err })
+                                };
+                                console.log("purchase performed");
+                                logger.info("purchase performed");
+                            });            
+                            res.end();
+                            connection.release();
+                        });
+                };
+            });
+            });
+    
+        logger.info("End purchase perform");
+
         });
 };
