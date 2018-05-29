@@ -21,7 +21,7 @@ router.get("/categories", (req, res) => {
     limit
   } = req.query;
 
-  Category.searchCategory(filter, (err, data) => {
+Category.searchCategory(filter, (err, data) => {
     res.json(data);
   });
 });

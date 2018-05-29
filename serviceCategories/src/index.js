@@ -3,7 +3,7 @@ const app = express();
 const categoriesRoutes = require('./app/routes/categoryRoutes');
 
 //settings
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 3005);
 
 //middlewares
 
